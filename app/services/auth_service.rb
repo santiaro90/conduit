@@ -5,10 +5,11 @@ class AuthService
 
       if user.authenticate(password)
         secret = Rails.application.credentials.secret_key_base
-        payload = { userId: user.id }
+        payload = {
+          user: user.slice(:bio, :email, :username)
+        }
 
-
-        JWT.encode(payload, secret, 'HS256')
+        [JWT.encode(payload, secret, 'HS256'), payload]
       end
     end
 
