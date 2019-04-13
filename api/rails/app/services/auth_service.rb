@@ -1,16 +1,19 @@
-class AuthService
+module AuthService
+  INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials'
+
   class << self
     def authenticate_user(email, password)
       user = User.find_by_email(email)
 
-      if user.authenticate(password)
-        secret = Rails.application.credentials.secret_key_base
-        payload = {
-          user: user.slice(:bio, :email, :username)
-        }
+      raise UserNotFound unless user
+      raise InvalidCredentials unless user.authenticate(password)
 
-        [JWT.encode(payload, secret, 'HS256'), payload]
-      end
+      secret = Rails.application.credentials.secret_key_base
+      payload = {
+        user: user.slice(:bio, :email, :username)
+      }
+
+      [JWT.encode(payload, secret, 'HS256'), payload]
     end
 
     def decode(token)
@@ -20,6 +23,18 @@ class AuthService
       {
         payload: payload.with_indifferent_access
       }
+    end
+  end
+
+  class UserNotFound < StandardError;
+    def message
+      INVALID_CREDENTIALS_MESSAGE
+    end
+  end
+
+  class InvalidCredentials < StandardError
+    def message
+      INVALID_CREDENTIALS_MESSAGE
     end
   end
 end

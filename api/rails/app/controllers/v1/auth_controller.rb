@@ -5,8 +5,11 @@ module V1
                                                       user_params[:password])
 
       cookies[:access_token] = { httponly: true, value: token }
-
       render json: payload, status: :ok
+    rescue AuthService::UserNotFound => e
+      render json: { error: e }, status: :not_found
+    rescue AuthService::InvalidCredentials => e
+      render json: { error: e }, status: :unauthorized
     end
 
     private
