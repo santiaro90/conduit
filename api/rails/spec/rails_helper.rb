@@ -23,3 +23,4 @@ end
 
 require 'support/database_cleaner'
 require 'support/factory_bot'
+require 'support/shoulda_matchers'

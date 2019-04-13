@@ -1,0 +1,24 @@
+clearing :on
+
+guard :rspec, cmd: 'bin/rspec' do
+  watch('config/routes.rb') { "spec" }
+  watch('spec/spec_helper.rb') { "spec" }
+  watch(%r{^spec/factories/.+\.rb$}) { "spec" }
+  watch(%r{^spec/support/.+\.rb$}) { "spec" }
+
+  watch(%r{^spec/(.+_spec\.rb)$})
+
+  watch('app/controllers/application_controller.rb') { "spec/controllers" }
+
+  watch(%r{^app/services/(.+_service)\.rb$}) do |m|
+    ["spec/controllers", "spec/services/#{m[1]}_spec.rb"]
+  end
+
+  watch(%r{^app/controllers/v1/(.+_controller)\.rb$}) do |m|
+    "spec/controllers/v1/#{m[1]}_spec.rb"
+  end
+
+  watch(%r{^app/models/(.+)\.rb$}) do |m|
+    "spec/models/#{m[1]}_spec.rb"
+  end
+end
