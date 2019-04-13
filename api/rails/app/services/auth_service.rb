@@ -1,12 +1,10 @@
 module AuthService
-  INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials'
-
   class << self
     def authenticate_user(email, password)
       user = User.find_by_email(email)
 
-      raise UserNotFound unless user
-      raise InvalidCredentials unless user.authenticate(password)
+      raise Conduit::Errors::NotFound unless user
+      raise Conduit::Errors::Unauthorized unless user.authenticate(password)
 
       secret = Rails.application.credentials.secret_key_base
       payload = {
@@ -23,18 +21,6 @@ module AuthService
       {
         payload: payload.with_indifferent_access
       }
-    end
-  end
-
-  class UserNotFound < StandardError;
-    def message
-      INVALID_CREDENTIALS_MESSAGE
-    end
-  end
-
-  class InvalidCredentials < StandardError
-    def message
-      INVALID_CREDENTIALS_MESSAGE
     end
   end
 end

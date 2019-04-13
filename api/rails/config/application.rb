@@ -32,5 +32,6 @@ module Conduit
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.middleware.use ActionDispatch::Cookies
+    config.autoload_paths += %W[#{config.root}/lib]
   end
 end
