@@ -1,0 +1,23 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      CONDUIT_DATABASE: conduit_test
+      CONDUIT_DATABASE_USERNAME: conduit
+      CONDUIT_DATABASE_PASSWORD: conduit
+      RAILS_MASTER_KEY: $RAILS_MASTER_KEY
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0.15
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: conduit_test
+      MYSQL_USER: conduit
+      MYSQL_PASSWORD: conduit

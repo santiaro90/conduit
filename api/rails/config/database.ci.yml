@@ -1,0 +1,8 @@
+test:
+  adapter: mysql2
+  encoding: utf8
+  host: db
+  username: <%= ENV.fetch("CONDUIT_DATABASE_USERNAME") %>
+  password: <%= ENV.fetch("CONDUIT_DATABASE_PASSWORD") %>
+  database: <%= ENV.fetch("CONDUIT_DATABASE") %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>

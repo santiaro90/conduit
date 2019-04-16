@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e -x
+
+docker_compose_file=./docker-compose.test.yml
+
+# Set docker-compose containers' prefix
+export COMPOSE_PROJECT_NAME=conduit
+
+# Run tests and clean up containers
+docker-compose -f $docker_compose_file run --rm api
+docker-compose -f $docker_compose_file down
