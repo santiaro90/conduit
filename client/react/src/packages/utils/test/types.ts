@@ -1,13 +1,16 @@
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-
 export type Scope = import('nock').Scope;
+
+export type DOMQueryResult = {
+  baseElement: HTMLElement | null;
+  container: HTMLElement | null;
+};
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface Global {
-      env: import('../../../types').ConduitEnv;
-      mockApi: Scope;
+      env: import('types').ConduitEnv;
     }
   }
 
