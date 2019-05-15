@@ -6,9 +6,9 @@ import { connect, MapDispatchToProps, MapStateToProps } from 'react-redux';
 import { ConduitState } from 'packages/core/types';
 import { LoginAction } from 'packages/auth/types';
 
-import { login } from '../auth.store';
-
 import LoginForm from './LoginForm';
+
+import { login } from '../auth.store';
 
 type LoginPage = {
   login: LoginAction;
