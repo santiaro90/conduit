@@ -8,6 +8,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import createStore from 'packages/core/core.store';
 
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const store = createStore();
 
 ReactDOM.render(
