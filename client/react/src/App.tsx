@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { Container } from 'reactstrap';
 
 import ConduitRoutes from './routes';
 
@@ -9,7 +10,9 @@ const App: FunctionComponent<{}> = () => (
     </header>
 
     <main>
-      <ConduitRoutes />
+      <Container>
+        <ConduitRoutes />
+      </Container>
     </main>
   </>
 );
