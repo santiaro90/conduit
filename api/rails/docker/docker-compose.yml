@@ -2,8 +2,8 @@ version: '3'
 services:
   api:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ../
+      dockerfile: ./docker/Dockerfile.dev
     environment:
       CONDUIT_DATABASE: conduit_dev
       CONDUIT_DATABASE_HOST: db
@@ -12,6 +12,10 @@ services:
       RAILS_MASTER_KEY: $RAILS_MASTER_KEY
     ports:
       - 3000:80
+    volumes:
+      - ../:/opt/conduit
+    networks:
+      - conduit-dev
     depends_on:
       - db
 
@@ -24,3 +28,12 @@ services:
       MYSQL_DATABASE: conduit_dev
       MYSQL_USER: conduit
       MYSQL_PASSWORD: conduit
+    volumes:
+      - conduit-dev-db:/var/lib/mysql
+    networks:
+      - conduit-dev
+volumes:
+  conduit-dev-db:
+networks:
+  conduit-dev:
+    external: true

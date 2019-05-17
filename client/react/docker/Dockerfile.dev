@@ -1,0 +1,10 @@
+# vim: set ft=dockerfile :
+FROM conduit-react
+
+WORKDIR /opt/conduit
+
+COPY .env.development .env
+
+EXPOSE 80
+
+CMD ["start"]

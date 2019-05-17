@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e -x
+
+# Set docker-compose containers' prefix
+export COMPOSE_PROJECT_NAME=conduit-dev-api
+
+if [[ $# -eq 0 ]]; then
+  echo 'run-dev-api: you must provide the api to run'
+  echo
+  echo 'Usage: run-dev-api <api>'
+  echo '  api    a subfolder of ./api'
+  echo
+  echo '  Example: run-dev-api rails'
+
+  exit 1
+fi
+
+api="$1"
+compose_file=./api/$api/docker/docker-compose.yml
+
+./docker/build-base-image api $api
+./docker/create-env-network dev
+
+shift
+docker-compose -f $compose_file up $*

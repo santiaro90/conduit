@@ -1,0 +1,7 @@
+version: '3'
+services:
+  web:
+    build:
+      dockerfile: ./Dockerfile.test
+    environment:
+      CONDUIT_API_BASE_URL: http://test.conduit.com

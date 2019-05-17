@@ -2,9 +2,12 @@ version: '3'
 services:
   api:
     build:
+      context: .
       dockerfile: Dockerfile.test
     environment:
       CONDUIT_DATABASE: conduit_test
+    volumes:
+      - ../config/database.ci.yml:/var/www/conduit/config/database.yml
 
   db:
     environment:

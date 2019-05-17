@@ -1,0 +1,14 @@
+#!/bin/bash
+project="${1:-api}" # project == api | client
+stack="${2:-rails}" # stack == a subdirectory of api or client, e.g react
+
+context=./$project/$stack
+dockerfile=$context/docker/Dockerfile
+image_name=conduit-$stack
+
+# This helps checking whether the image already exists
+docker image inspect $image_name > /dev/null 2>&1
+
+# Build image if needed
+[[ $? -eq 0 ]] || \
+  docker image build -f $dockerfile -t $image_name $context

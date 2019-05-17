@@ -1,0 +1,11 @@
+#!/bin/bash
+env="${1-dev}"
+network_name=conduit-$env
+
+# This helps checking whether the network already exists
+docker network inspect $network_name > /dev/null 2>&1
+
+# Create network if needed
+[[ $? -eq 0 ]] || \
+  docker network create $network_name
+

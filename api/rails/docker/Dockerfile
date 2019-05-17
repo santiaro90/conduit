@@ -1,6 +1,6 @@
 FROM ruby:2.5.3-alpine
 
-ARG APP_ROOT=/var/www/conduit
+ARG APP_ROOT=/opt/conduit
 
 RUN apk --update --no-cache add build-base tzdata mariadb-dev netcat-openbsd curl \
   && curl https://raw.githubusercontent.com/eficode/wait-for/master/wait-for \
