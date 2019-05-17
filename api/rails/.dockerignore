@@ -1,0 +1,10 @@
+.dockerignore
+.git*
+Dockerfile*
+docker-compose*
+
+.ruby-version
+Guardfile
+log
+node_modules
+tmp

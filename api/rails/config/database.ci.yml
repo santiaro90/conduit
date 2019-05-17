@@ -1,7 +1,7 @@
 test:
   adapter: mysql2
   encoding: utf8
-  host: db
+  host: <%= ENV.fetch("CONDUIT_DATABASE_HOST") %>
   username: <%= ENV.fetch("CONDUIT_DATABASE_USERNAME") %>
   password: <%= ENV.fetch("CONDUIT_DATABASE_PASSWORD") %>
   database: <%= ENV.fetch("CONDUIT_DATABASE") %>
