@@ -1,4 +1,10 @@
 #!/bin/bash
-set -e -x
+set -x
 
-docker image build -t santiaro90/conduit-rails .
+image_name=conduit-base
+
+# This helps checking whether the image already exists
+docker image inspect $image_name > /dev/null 2>&1
+
+# Build image if needed
+[[ $? -eq 0 ]] || docker image build -t $image_name .
