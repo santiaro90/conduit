@@ -1,0 +1,14 @@
+# vim: set ft=dockerfile :
+FROM conduit-base
+
+WORKDIR /var/www/conduit
+
+ENV RAILS_ENV=development
+
+RUN touch /var/www/conduit/log/development.log
+
+EXPOSE 80
+
+CMD ["bin/rails", "server", \
+     "-p", "80", \
+     "-b", "0.0.0.0"]
