@@ -1,9 +1,9 @@
 # vim: set ft=dockerfile :
-FROM santiaro90/conduit-rails
-
-ENV RAILS_ENV test
+FROM conduit-base
 
 WORKDIR /var/www/conduit
+
+ENV RAILS_ENV=test
 
 RUN rm config/database.yml && mv config/database.ci.yml config/database.yml
 
