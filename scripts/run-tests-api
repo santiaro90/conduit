@@ -20,7 +20,7 @@ fi
 api="$1"
 service="$2"
 
-./docker/build-base-image api $api
+./scripts/build-base-image api $api
 
 compose_file=./api/$api/docker/docker-compose.test.yml
 

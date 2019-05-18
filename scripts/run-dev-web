@@ -18,8 +18,8 @@ fi
 client="$1"
 compose_file=./client/$client/docker/docker-compose.yml
 
-./docker/build-base-image client $client
-./docker/create-env-network dev
+./scripts/build-base-image client $client
+./scripts/create-env-network dev
 
 shift
 docker-compose -f $compose_file up $*

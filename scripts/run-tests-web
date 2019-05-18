@@ -20,7 +20,7 @@ fi
 client="$1"
 service="$2"
 
-./docker/build-base-image client $client
+./scripts/build-base-image client $client
 
 compose_file=./client/$client/docker/docker-compose.test.yml
 

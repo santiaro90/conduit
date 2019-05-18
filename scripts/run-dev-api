@@ -18,8 +18,8 @@ fi
 api="$1"
 compose_file=./api/$api/docker/docker-compose.yml
 
-./docker/build-base-image api $api
-./docker/create-env-network dev
+./scripts/build-base-image api $api
+./scripts/create-env-network dev
 
 shift
 docker-compose -f $compose_file up $*
