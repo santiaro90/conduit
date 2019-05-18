@@ -1,35 +1,25 @@
+services:
+  - docker
+
 matrix:
   include:
   - language: ruby
-    services:
-      - docker
     branches:
       only:
         - master
         - "/^api\\/rails(?:-.*)?/"
     env:
       - secure: RmAlhOheheVpEXi21TmhimB4H/aNsx9tCr9lNgvCjDpViGniIhqEbDXRFqo3W75GMBCsLUvxV2S9/oFEF2vlYKQDCmTsnuRwjiaS5tosoFHlyXP3/sizZEJR8M4Mv+JQCo0jeiZ2ZMG2/OQHWCd08WfFhsUwmN407PH2RtwgZ22ILaATZi8EZWd0YqiDSPeypN0WTKxbewJq6RWJAB5+rIk9w/LzUCtcHcj0z/J45o0F/hR6vuJHfAauq7bwbD37Xy5tEk+utpjz2qT8m6fFJDVaHh3Bek7TP1KSkbbILF3UrUOZ0aBioQ9rAElPWXlYA9pw6aBNZzgjrXjv0Lm2iLO4avS36+wOioMpoULL9WNM/z88Gyt7VAYSQmHkWP1HYtwWEbCvwT7ZrzDuaVziO38T9yIjtzmb26OKt2GsfF/dvpHZPFhTNNNXmlGk9mzFQF79L9wpzlekzx+07fx0D8Pk7lh5v3tWklPzQ17B+BfbgZOOu4t4QG+M/oQgH5sgG/NlccWQKEU5X6tswMl6yCiyj4rugkyaJHLMZfja5nEMnYrZa21HdU6RdjobZ/lSAXTSMxa2MTEVxyI6+p9GdN93leV7K485ySIVBOnzeH7+7MdaXBSjNSz3K58g8bhCyqpKHb/p0ZKdKfhT4kXcgediTZBX1bjM/rsCyF+r73Y=
-    before_install:
-      - cd ./api/rails
-    install:
-      - scripts/build-base-image
     script:
-      - scripts/run-specs
+      - ./docker/run-tests-api rails api
 
   - language: node_js
-    node_js:
-      - 11.4.0
     branches:
       only:
         - master
         - "/^client\\/react(?:-.*)?/"
-    before_install:
-      - cd ./client/react
-    cache:
-      directories:
-        - node_modules
     script:
-      - npm test
+      - ./docker/run-tests-web react web
     deploy:
       app: santiaro90-conduit-react
       provider: heroku
