@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x
+set -e
 
 # Set docker-compose containers' prefix
 export COMPOSE_PROJECT_NAME=conduit-test
