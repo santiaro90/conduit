@@ -23,6 +23,8 @@ describe('Auth store', (): void => {
     username: 'santiago',
   };
 
+  const user = { user: credentials };
+
   beforeEach(
     (): void => {
       store = createStore();
@@ -39,14 +41,44 @@ describe('Auth store', (): void => {
       const { auth } = store.getState();
       expect(auth.currentUser).toBeNull();
     });
+
+    it(`doesn't have an error`, (): void => {
+      const { auth } = store.getState();
+      expect(auth.error).toBeNull();
+    });
   });
 
   it('logs a user in', async (): Promise<void> => {
-    api.post(endpoints.login, { user: credentials }).reply(200, { user: profile });
+    api.post(endpoints.login, user).reply(200, { user: profile });
 
     await store.dispatch(login(credentials));
 
     const { auth } = store.getState();
     expect(auth.loggedIn).toBe(true);
+  });
+
+  it('handles authentication errors', async (): Promise<void> => {
+    const error404 = 'Not Found';
+    const error401 = 'Not Authorised';
+
+    api
+      .post(endpoints.login, user)
+      .reply(401, { error: error401 })
+      .post(endpoints.login, user)
+      .reply(404, { error: error404 });
+
+    await store.dispatch(login(credentials));
+
+    const { auth: auth401 } = store.getState();
+
+    expect(auth401.loggedIn).toBe(false);
+    expect(auth401.error).toBe(error401);
+
+    await store.dispatch(login(credentials));
+
+    const { auth: auth404 } = store.getState();
+
+    expect(auth404.loggedIn).toBe(false);
+    expect(auth404.error).toBe(error404);
   });
 });

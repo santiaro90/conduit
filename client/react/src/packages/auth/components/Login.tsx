@@ -15,12 +15,16 @@ import styles from './styles/Login.module.css';
 
 type LoginPage = {
   login: LoginAction;
+  error: string | null;
 };
 
-const Login: FunctionComponent<LoginPage> = ({ login }) => (
+const Login: FunctionComponent<LoginPage> = ({ error, login }) => (
   <Row>
     <Col md={{ size: 6, offset: 3 }}>
       <h1 className={styles.header}>Sign in</h1>
+
+      {error && <h3>{error}</h3>}
+
       <Formik
         component={LoginForm}
         initialValues={{ email: '', password: '' }}
@@ -30,7 +34,10 @@ const Login: FunctionComponent<LoginPage> = ({ login }) => (
   </Row>
 );
 
-const mapStateToProps: MapStateToProps<{}, {}, ConduitState> = state => state;
+const mapStateToProps: MapStateToProps<{}, {}, ConduitState> = state => ({
+  error: state.auth.error,
+});
+
 const mapDispatchToProps: MapDispatchToProps<{}, {}> = dispatch =>
   bindActionCreators(
     {
