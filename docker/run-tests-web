@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e -x
+
+# Set docker-compose containers' prefix
+export COMPOSE_PROJECT_NAME=conduit-test
+
+if [[ $# -lt 2 ]]; then
+  echo 'run-tests-web: you must provide the stack and service to test'
+  echo
+  echo 'Usage: run-tests-web <client> <service>'
+  echo '  client     a subfolder of ./client'
+  echo '  service    the service defined in ./client/$client/docker/docker-compose.test.yml'
+  echo '             that will run your tests'
+  echo
+  echo '  Example: run-tests-web react web'
+
+  exit 1
+fi
+
+client="$1"
+service="$2"
+
+./docker/build-base-image client $client
+
+compose_file=./client/$client/docker/docker-compose.test.yml
+
+shift 2
+docker-compose -f $compose_file run --rm $service $*
+docker-compose -f $compose_file down --rmi local

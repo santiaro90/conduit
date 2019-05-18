@@ -7,7 +7,7 @@ export COMPOSE_PROJECT_NAME=conduit-dev-web
 if [[ $# -eq 0 ]]; then
   echo 'run-dev-web: you must provide the client to run'
   echo
-  echo 'Usage: run-dev <client>'
+  echo 'Usage: run-dev-web <client>'
   echo '  client    a subfolder of ./client'
   echo
   echo '  Example: run-dev-web react'

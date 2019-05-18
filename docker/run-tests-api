@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e -x
+
+# Set docker-compose containers' prefix
+export COMPOSE_PROJECT_NAME=conduit-test
+
+if [[ $# -lt 2 ]]; then
+  echo 'run-tests-api: you must provide the stack and service to test'
+  echo
+  echo 'Usage: run-tests-api <api> <service>'
+  echo '  api       a subfolder of ./api'
+  echo '  service   the service defined in ./api/$api/docker/docker-compose.test.yml'
+  echo '            that will run your tests'
+  echo
+  echo '  Example: run-tests-api rails api'
+
+  exit 1
+fi
+
+api="$1"
+service="$2"
+
+./docker/build-base-image api $api
+
+compose_file=./api/$api/docker/docker-compose.test.yml
+
+shift 2
+docker-compose -f $compose_file run --rm $service $*
+docker-compose -f $compose_file down --rmi local
