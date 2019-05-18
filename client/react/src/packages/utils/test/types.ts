@@ -1,4 +1,4 @@
-import { RenderResult } from 'react-testing-library';
+import { RenderResult as RTLRenderResult } from 'react-testing-library';
 
 import { ConduitEnv } from 'packages/config/types';
 import { ConduitStore } from 'packages/core/types';
@@ -11,8 +11,12 @@ export type DOMQueryResult = {
   container: HTMLElement | null;
 };
 
-export type RenderResult = RenderResult & {
+export type RenderResult = RTLRenderResult & {
   store: ConduitStore;
+};
+
+export type PageObject = {
+  component: RenderResult;
 };
 
 type Env = ConduitEnv;

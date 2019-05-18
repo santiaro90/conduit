@@ -1,39 +1,28 @@
-import React from 'react';
-
-import Login from '../Login';
-
 import utils from 'packages/utils/test';
 import { endpoints } from 'packages/config';
 
-const { api, wait } = utils;
-const { events, queries, render } = utils.dom;
+const { api, pages, wait } = utils;
 
 describe('<Login />', (): void => {
   const credentials = {
     email: 'santiago@example.com',
     password: 'password',
   };
-
-  beforeEach(
-    (): void => {
-      api.post(endpoints.login, { user: credentials }).reply(200);
-    }
-  );
+  const user = { user: credentials };
 
   it('submits user credentials', async (): Promise<void> => {
-    const { container, getByText, store } = render(<Login />);
+    api.post(endpoints.login, user).reply(200);
 
-    const { baseElement: email } = queries.getByName(container, 'email');
-    const { baseElement: pass } = queries.getByName(container, 'password');
-    const submit = getByText(/login/i);
+    const loginPage = pages.login();
 
-    events.fillInput(email as HTMLInputElement, credentials.email);
-    events.fillInput(pass as HTMLInputElement, credentials.password);
-    events.clickOn(submit);
+    loginPage
+      .setEmail(credentials.email)
+      .setPassword(credentials.password)
+      .submit();
 
     await wait(
       (): void => {
-        const { auth } = store.getState();
+        const { auth } = loginPage.component.store.getState();
 
         expect(api).toReplyToRequest(endpoints.login, 'POST');
         expect(auth.loggedIn).toBe(true);
