@@ -23,7 +23,7 @@ const Login: FunctionComponent<LoginPage> = ({ error, login }) => (
     <Col md={{ size: 6, offset: 3 }}>
       <h1 className={styles.header}>Sign in</h1>
 
-      {error && <h3>{error}</h3>}
+      {error && <h3 className={`${styles.error} text-danger`}>{error}</h3>}
 
       <Formik
         component={LoginForm}
