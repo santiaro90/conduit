@@ -3,12 +3,12 @@ import React from 'react';
 import Login from '../Login';
 
 import utils from 'packages/utils/test';
+import { endpoints } from 'packages/config';
 
 const { api, wait } = utils;
 const { events, queries, render } = utils.dom;
 
 describe('<Login />', (): void => {
-  const path = '/auth/login';
   const credentials = {
     email: 'santiago@example.com',
     password: 'password',
@@ -16,7 +16,7 @@ describe('<Login />', (): void => {
 
   beforeEach(
     (): void => {
-      api.post('/auth/login', credentials).reply(200);
+      api.post(endpoints.login, { user: credentials }).reply(200);
     }
   );
 
@@ -35,7 +35,7 @@ describe('<Login />', (): void => {
       (): void => {
         const { auth } = store.getState();
 
-        expect(api).toReplyToRequest(path, 'POST');
+        expect(api).toReplyToRequest(endpoints.login, 'POST');
         expect(auth.loggedIn).toBe(true);
       }
     );

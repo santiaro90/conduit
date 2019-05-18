@@ -1,3 +1,3 @@
 export default {
-  login: '/auth/login',
+  login: '/login',
 };

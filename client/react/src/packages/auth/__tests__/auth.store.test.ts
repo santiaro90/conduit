@@ -42,7 +42,7 @@ describe('Auth store', (): void => {
   });
 
   it('logs a user in', async (): Promise<void> => {
-    api.post(endpoints.login, credentials).reply(200, { user: profile });
+    api.post(endpoints.login, { user: credentials }).reply(200, { user: profile });
 
     await store.dispatch(login(credentials));
 
