@@ -1,10 +1,9 @@
 .dockerignore
 .git*
 Dockerfile*
-docker*
+docker-compose*
+scripts
 
-.ruby-version
-Guardfile
-log
 node_modules
-tmp
+build
+.env.*.local

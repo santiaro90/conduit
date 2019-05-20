@@ -1,11 +1,9 @@
 # vim: set ft=dockerfile :
-FROM conduit-base
+FROM conduit-rails
 
-WORKDIR /var/www/conduit
+WORKDIR /opt/conduit
 
 ENV RAILS_ENV=development
-
-RUN touch /var/www/conduit/log/development.log
 
 EXPOSE 80
 

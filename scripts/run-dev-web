@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+# Set docker-compose containers' prefix
+export COMPOSE_PROJECT_NAME=conduit-dev-web
+
+if [[ $# -eq 0 ]]; then
+  echo 'run-dev-web: you must provide the client to run'
+  echo
+  echo 'Usage: run-dev-web <client>'
+  echo '  client    a subfolder of ./client'
+  echo
+  echo '  Example: run-dev-web react'
+
+  exit 1
+fi
+
+client="$1"
+compose_file=./client/$client/docker/docker-compose.yml
+
+./scripts/build-base-image client $client
+./scripts/create-env-network dev
+
+shift
+docker-compose -f $compose_file up $*

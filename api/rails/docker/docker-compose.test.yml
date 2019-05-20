@@ -2,16 +2,14 @@ version: '3'
 services:
   api:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ../
+      dockerfile: ./docker/Dockerfile.test
     environment:
-      CONDUIT_DATABASE: conduit_dev
+      CONDUIT_DATABASE: conduit_test
       CONDUIT_DATABASE_HOST: db
       CONDUIT_DATABASE_USERNAME: conduit
       CONDUIT_DATABASE_PASSWORD: conduit
       RAILS_MASTER_KEY: $RAILS_MASTER_KEY
-    ports:
-      - 3000:80
     depends_on:
       - db
 
@@ -21,6 +19,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: conduit_dev
+      MYSQL_DATABASE: conduit_test
       MYSQL_USER: conduit
       MYSQL_PASSWORD: conduit

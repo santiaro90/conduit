@@ -1,11 +1,11 @@
 # vim: set ft=dockerfile :
-FROM conduit-base
+FROM conduit-rails
 
-WORKDIR /var/www/conduit
+WORKDIR /opt/conduit
 
 ENV RAILS_ENV=test
 
-RUN rm config/database.yml && mv config/database.ci.yml config/database.yml
+COPY config/database.ci.yml ./config/database.yml
 
 CMD ["sh", "-c", \
      "echo 'Waiting for MySQL to be ready...'; \

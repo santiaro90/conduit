@@ -1,8 +1,0 @@
-#!/bin/bash
-set -e -x
-
-# Set docker-compose containers' prefix
-export COMPOSE_PROJECT_NAME=conduit-dev
-
-./scripts/build-base-image
-docker-compose up --build

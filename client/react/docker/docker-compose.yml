@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.dev
+    environment:
+      CONDUIT_API_BASE_URL: http://dev.conduit.com:3000
+      CONDUIT_API_VERSION: v1
+      HOST: 0.0.0.0
+      PORT: 80
+    ports:
+      - 3001:80
+    volumes:
+      - ../public:/opt/conduit/public
+      - ../src:/opt/conduit/src
+    networks:
+      - conduit-dev
+networks:
+  conduit-dev:
+    external: true
