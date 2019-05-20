@@ -2,10 +2,9 @@ import { UserCredentials, UserProfile } from 'packages/api/types';
 import { ConduitStore } from 'packages/core/types';
 
 import createStore from 'packages/core/core.store';
-import { login } from '../auth.store';
-
 import utils from 'packages/utils/test';
 import { endpoints } from 'packages/config';
+import { login } from '../auth.store';
 
 const { api } = utils;
 

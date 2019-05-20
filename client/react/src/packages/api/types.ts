@@ -17,7 +17,7 @@ export type UserProfile = {
 };
 
 // Request Types
-export interface RequestErrorResponse extends AxiosError {
+export interface RequestError extends AxiosError {
   response: AxiosResponse<GenericError>;
 }
 

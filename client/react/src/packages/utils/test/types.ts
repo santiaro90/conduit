@@ -6,14 +6,13 @@ import { ConduitStore } from 'packages/core/types';
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 export type Scope = import('nock').Scope;
 
-export type DOMQueryResult = {
-  baseElement: HTMLElement | null;
-  container: HTMLElement | null;
+type Queries = {
+  getByName: (name: string) => HTMLElement | null;
 };
 
 export type RenderResult = RTLRenderResult & {
   store: ConduitStore;
-};
+} & { [Q in keyof Queries]: Queries[Q] };
 
 export type PageObject = {
   component: RenderResult;

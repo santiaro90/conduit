@@ -12,6 +12,7 @@ describe('<Login />', (): void => {
 
   it('submits user credentials', async (): Promise<void> => {
     const loginPage = pages.login();
+    const { store } = loginPage.component;
 
     api.post(endpoints.login, user).reply(200);
 
@@ -22,7 +23,7 @@ describe('<Login />', (): void => {
 
     await wait(
       (): void => {
-        const { auth } = loginPage.component.store.getState();
+        const { auth } = store.getState();
         expect(auth.loggedIn).toBe(true);
       }
     );
@@ -31,6 +32,7 @@ describe('<Login />', (): void => {
   it('renders authentication failures', async (): Promise<void> => {
     const error = 'Authentication Error';
     const loginPage = pages.login();
+    const { store } = loginPage.component;
 
     api.post(endpoints.login, user).reply(404, { error });
 
@@ -41,7 +43,7 @@ describe('<Login />', (): void => {
 
     await wait(
       (): void => {
-        const { auth } = loginPage.component.store.getState();
+        const { auth } = store.getState();
         const { queryByText } = loginPage.component;
 
         const errorElement = queryByText(error);

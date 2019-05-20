@@ -5,6 +5,8 @@ import { Login } from 'packages/auth/components';
 
 import dom from '../dom';
 
+const { events } = dom;
+
 type LoginPageObject = PageObject & {
   setEmail: (email: string) => LoginPageObject;
   setPassword: (password: string) => LoginPageObject;
@@ -15,22 +17,22 @@ const login = (): LoginPageObject => ({
   component: dom.render(<Login />),
 
   setEmail(value: string): LoginPageObject {
-    const input = dom.queries.getByName(this.component.container, 'email');
-    dom.events.fillInput(input.baseElement as HTMLInputElement, value);
+    const input = this.component.getByName('email') as HTMLInputElement;
+    events.fillInput(input, value);
 
     return this;
   },
 
   setPassword(value: string): LoginPageObject {
-    const input = dom.queries.getByName(this.component.container, 'password');
-    dom.events.fillInput(input.baseElement as HTMLInputElement, value);
+    const input = this.component.getByName('password') as HTMLInputElement;
+    events.fillInput(input, value);
 
     return this;
   },
 
   submit(): LoginPageObject {
     const submit = this.component.getByText(/login/i);
-    dom.events.clickOn(submit);
+    events.clickOn(submit);
 
     return this;
   },
