@@ -20,6 +20,8 @@ matrix:
         - "/^client\\/react(?:-.*)?/"
     script:
       - ./scripts/run-tests-web react web
+    before_deploy:
+      - cd ./client/react
     deploy:
       app: santiaro90-conduit-react
       provider: heroku
