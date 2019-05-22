@@ -1,30 +1,58 @@
+install: true
 services:
   - docker
 
-matrix:
-  include:
-  - language: ruby
-    branches:
-      only:
-        - master
-        - "/^api\\/rails(?:-.*)?/"
-    env:
-      - secure: RmAlhOheheVpEXi21TmhimB4H/aNsx9tCr9lNgvCjDpViGniIhqEbDXRFqo3W75GMBCsLUvxV2S9/oFEF2vlYKQDCmTsnuRwjiaS5tosoFHlyXP3/sizZEJR8M4Mv+JQCo0jeiZ2ZMG2/OQHWCd08WfFhsUwmN407PH2RtwgZ22ILaATZi8EZWd0YqiDSPeypN0WTKxbewJq6RWJAB5+rIk9w/LzUCtcHcj0z/J45o0F/hR6vuJHfAauq7bwbD37Xy5tEk+utpjz2qT8m6fFJDVaHh3Bek7TP1KSkbbILF3UrUOZ0aBioQ9rAElPWXlYA9pw6aBNZzgjrXjv0Lm2iLO4avS36+wOioMpoULL9WNM/z88Gyt7VAYSQmHkWP1HYtwWEbCvwT7ZrzDuaVziO38T9yIjtzmb26OKt2GsfF/dvpHZPFhTNNNXmlGk9mzFQF79L9wpzlekzx+07fx0D8Pk7lh5v3tWklPzQ17B+BfbgZOOu4t4QG+M/oQgH5sgG/NlccWQKEU5X6tswMl6yCiyj4rugkyaJHLMZfja5nEMnYrZa21HdU6RdjobZ/lSAXTSMxa2MTEVxyI6+p9GdN93leV7K485ySIVBOnzeH7+7MdaXBSjNSz3K58g8bhCyqpKHb/p0ZKdKfhT4kXcgediTZBX1bjM/rsCyF+r73Y=
-    script:
-      - ./scripts/run-tests-api rails api
+heroku: &heroku
+  provider: heroku
+  api_key:
+    secure: OSYKw32iT/V4U4OZUDM8kwS6crM9Hyb1MgFnRpTUdRS5znt3oi3WCCmKthLDqz9d7SKQ9BIL3K0lGTDtAOvWlMGKEX6pJe4fkJnvZNCwCGi4CUYQoVCOgQWVass/3Ru5jw/SVRuAg8c8PE6kXOAghhiOtqf1FAD1wyJMExcSytR0xmnTx2lx5UDwhh+ykCzwL5DWvkD92GnaSNTn1zTj/WFIjcdjUnIg2Jksau1WGdDj12xd3JumDU6BkrBX1ADX+joFGXEkG6tLSLoy8gILcjwGHeGix+KxNFgqE1t66qO2WIBmzx0rP18GFDbj10IqwrPxrk9PLqHAkfULVo/tibYp0FGlUIxuaA+8D9sfmHdjQ2DKg97m+8SEWHfTJTavZM+tsSAaZZ9RlLYPrnUgEt55mAgAiJ6j5upU4rFSKQGDVmJugoBAaxs4kCjz8wosBhnYZfqBfMVyFe/65QRmWhhOF+8EnaXpwwii1Qil7mj1BuYrntsOeSLFXSELJ3kQq5KvlDfvFKjLsSiPvsd8awJ+VctA+fPLAYqdau74icdTE9uZ5yvFCb5bC4KWfL81vvBoc1RdD4GAfGFJFanRsvyn5VgISXzQsda/+AL5S39pECBSPYMVYrZFoS0y1LK4i8X6mF1K2QghZlubWmx/NDWxHLZbauqRrGubNTyTeNQ=
+  on: master
 
-  - language: node_js
-    branches:
-      only:
-        - master
-        - "/^client\\/react(?:-.*)?/"
-    script:
-      - ./scripts/run-tests-web react web
-    before_deploy:
-      - cd ./client/react
-    deploy:
-      app: santiaro90-conduit-react
-      provider: heroku
-      api_key:
-        secure: OSYKw32iT/V4U4OZUDM8kwS6crM9Hyb1MgFnRpTUdRS5znt3oi3WCCmKthLDqz9d7SKQ9BIL3K0lGTDtAOvWlMGKEX6pJe4fkJnvZNCwCGi4CUYQoVCOgQWVass/3Ru5jw/SVRuAg8c8PE6kXOAghhiOtqf1FAD1wyJMExcSytR0xmnTx2lx5UDwhh+ykCzwL5DWvkD92GnaSNTn1zTj/WFIjcdjUnIg2Jksau1WGdDj12xd3JumDU6BkrBX1ADX+joFGXEkG6tLSLoy8gILcjwGHeGix+KxNFgqE1t66qO2WIBmzx0rP18GFDbj10IqwrPxrk9PLqHAkfULVo/tibYp0FGlUIxuaA+8D9sfmHdjQ2DKg97m+8SEWHfTJTavZM+tsSAaZZ9RlLYPrnUgEt55mAgAiJ6j5upU4rFSKQGDVmJugoBAaxs4kCjz8wosBhnYZfqBfMVyFe/65QRmWhhOF+8EnaXpwwii1Qil7mj1BuYrntsOeSLFXSELJ3kQq5KvlDfvFKjLsSiPvsd8awJ+VctA+fPLAYqdau74icdTE9uZ5yvFCb5bC4KWfL81vvBoc1RdD4GAfGFJFanRsvyn5VgISXzQsda/+AL5S39pECBSPYMVYrZFoS0y1LK4i8X6mF1K2QghZlubWmx/NDWxHLZbauqRrGubNTyTeNQ=
-      on: master
+stages:
+  - test
+  - deploy
+
+jobs:
+  include:
+    - stage: test
+      language: ruby
+      branches:
+        only:
+          - master
+          - "/^api\\/rails(?:-.*)?/"
+      env:
+        - secure: RmAlhOheheVpEXi21TmhimB4H/aNsx9tCr9lNgvCjDpViGniIhqEbDXRFqo3W75GMBCsLUvxV2S9/oFEF2vlYKQDCmTsnuRwjiaS5tosoFHlyXP3/sizZEJR8M4Mv+JQCo0jeiZ2ZMG2/OQHWCd08WfFhsUwmN407PH2RtwgZ22ILaATZi8EZWd0YqiDSPeypN0WTKxbewJq6RWJAB5+rIk9w/LzUCtcHcj0z/J45o0F/hR6vuJHfAauq7bwbD37Xy5tEk+utpjz2qT8m6fFJDVaHh3Bek7TP1KSkbbILF3UrUOZ0aBioQ9rAElPWXlYA9pw6aBNZzgjrXjv0Lm2iLO4avS36+wOioMpoULL9WNM/z88Gyt7VAYSQmHkWP1HYtwWEbCvwT7ZrzDuaVziO38T9yIjtzmb26OKt2GsfF/dvpHZPFhTNNNXmlGk9mzFQF79L9wpzlekzx+07fx0D8Pk7lh5v3tWklPzQ17B+BfbgZOOu4t4QG+M/oQgH5sgG/NlccWQKEU5X6tswMl6yCiyj4rugkyaJHLMZfja5nEMnYrZa21HdU6RdjobZ/lSAXTSMxa2MTEVxyI6+p9GdN93leV7K485ySIVBOnzeH7+7MdaXBSjNSz3K58g8bhCyqpKHb/p0ZKdKfhT4kXcgediTZBX1bjM/rsCyF+r73Y=
+      script:
+        - ./scripts/run-tests-api rails api
+
+    - stage: test
+      language: node_js
+      branches:
+        only:
+          - master
+          - "/^client\\/react(?:-.*)?/"
+      script:
+        - ./scripts/run-tests-web react web
+
+    # Deploy React
+    - stage: deploy
+      language: node_js
+      script: skip
+      before_deploy:
+        - cd ./client/react
+      deploy:
+        <<: *heroku
+        app: santiaro90-conduit-react
+
+    # Deploy Rails
+    - stage: deploy
+      language: ruby
+      script: skip
+      before_deploy:
+        - cp ./scripts/rds-ca-cert.pem ./api/rails/config
+        - cd ./api/rails
+      deploy:
+        <<: *heroku
+        app: santiaro90-conduit-rails
+        run: bin/rails db:migrate
+        skip_cleanup: true
