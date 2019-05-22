@@ -59,4 +59,4 @@ jobs:
         app: santiaro90-conduit-rails
         skip_cleanup: true
         run: bin/rails db:migrate
-        on: api/rails-cors-and-deploy
+        on: master
