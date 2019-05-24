@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe V1::AuthController, type: :request do
   context 'POST /login' do
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { FactoryBot.create(:registered_user) }
     let(:anonymous) { FactoryBot.build(:user, email: 'anon@example.com') }
 
     context 'with valid credentials' do
