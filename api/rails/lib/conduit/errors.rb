@@ -11,5 +11,11 @@ module Conduit
         'Invalid Credentials'
       end
     end
+
+    class InvalidParams < StandardError
+      def initialize(message)
+        super
+      end
+    end
   end
 end
