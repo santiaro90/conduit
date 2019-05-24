@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe V1::AuthController, type: :request do
-  context 'POST /login' do
+  describe 'POST /login' do
     let(:user) { FactoryBot.create(:registered_user) }
     let(:anonymous) { FactoryBot.build(:user, email: 'anon@example.com') }
 
     context 'with valid credentials' do
       before :each do
-        credentials = { email: user.email, password: 'password'}
+        credentials = { email: user.email, password: 'password' }
         post v1_login_path, params: { user: credentials }, as: :json
       end
 

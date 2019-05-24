@@ -2,12 +2,11 @@ require 'rails_helper'
 
 describe V1::UsersController, type: :request do
   describe 'POST /users' do
-    let (:info) { FactoryBot.attributes_for(:user) }
+    let (:bad_email) { FactoryBot.attributes_for(:user, email: '@bademail') }
 
     context 'with complete information' do
       it "fails if the email isn't well formatted" do
-        info['email'] = '@bademail'
-        post v1_users_path, params: { user: info }, as: :json
+        post v1_users_path, params: { user: bad_email }, as: :json
 
         payload = JSON.parse(response.body)
 

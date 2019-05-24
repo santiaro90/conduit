@@ -3,9 +3,13 @@ module V1
 
   class UsersController < ApplicationController
     def create
-      user = User.create(params['user'])
-    rescue ActiveModel::ForbiddenAttributesError
-      raise InvalidParams, 'Bad Params' unless user
+      user = User.create!(user_params)
+    end
+
+    private
+
+    def user_params
+      params.require(:user).permit!
     end
   end
 end
