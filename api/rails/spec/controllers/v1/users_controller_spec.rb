@@ -6,11 +6,27 @@ describe V1::UsersController, type: :request do
       it "fails if the email isn't well formatted" do
         bad_email = FactoryBot.attributes_for(:user, email: '@bademail')
 
-        post v1_users_path, params: { user: bad_email }, as: :json
+        post v1_users_path, params: { user: bad_email }
         payload = JSON.parse(response.body)
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(payload['error']).not_to be_empty
+      end
+
+      it 'creates a user' do
+        info = FactoryBot.attributes_for(:user)
+
+        post v1_users_path, params: { user: info }
+
+        payload = JSON.parse(response.body)
+        user = payload['user'].with_indifferent_access
+        record = User.find_by_email(user[:email])
+
+        expect(response).to have_http_status(:created)
+
+        expect(record).to be_present
+        expect(user[:bio]).to be_nil
+        expect(user[:username]).to eq(user[:username])
       end
     end
 

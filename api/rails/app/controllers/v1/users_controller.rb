@@ -3,7 +3,9 @@ module V1
 
   class UsersController < ApplicationController
     def create
-      User.create!(user_params)
+      user = User.create!(user_params)
+
+      render json: user, status: :created
     end
 
     private
