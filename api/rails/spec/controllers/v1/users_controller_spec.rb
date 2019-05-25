@@ -15,42 +15,31 @@ describe V1::UsersController, type: :request do
     end
 
     context 'with incomplete information' do
-      it 'fails for empty params' do
-        post v1_users_path
-        payload = JSON.parse(response.body)
+      shared_examples_for 'a request with missing params' do |missing_param|
+        it "fails when missing #{missing_param}" do
+          post v1_users_path, params: params
 
-        expect(response).to have_http_status(:bad_request)
-        expect(payload['error']).not_to be_empty
+          payload = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:bad_request)
+          expect(payload['error']).not_to be_empty
+        end
       end
 
-      it 'fails for missing email' do
-        user = FactoryBot.attributes_for(:user, email: nil)
-
-        post v1_users_path, params: { user: user }
-        payload = JSON.parse(response.body)
-
-        expect(response).to have_http_status(:bad_request)
-        expect(payload['error']).not_to be_empty
+      it_behaves_like 'a request with missing params', 'user' do
+        let(:params) { {} }
       end
 
-      it 'fails for missing username' do
-        user = FactoryBot.attributes_for(:user, username: nil)
-
-        post v1_users_path, params: { user: user }
-        payload = JSON.parse(response.body)
-
-        expect(response).to have_http_status(:bad_request)
-        expect(payload['error']).not_to be_empty
+      it_behaves_like 'a request with missing params', 'email' do
+        let(:params) { FactoryBot.attributes_for(:user, email: nil) }
       end
 
-      it 'fails for missing password' do
-        user = FactoryBot.attributes_for(:user, password: nil)
+      it_behaves_like 'a request with missing params', 'password' do
+        let(:params) { FactoryBot.attributes_for(:user, password: nil) }
+      end
 
-        post v1_users_path, params: { user: user }
-        payload = JSON.parse(response.body)
-
-        expect(response).to have_http_status(:bad_request)
-        expect(payload['error']).not_to be_empty
+      it_behaves_like 'a request with missing params', 'username' do
+        let(:params) { FactoryBot.attributes_for(:user, username: nil) }
       end
     end
   end
