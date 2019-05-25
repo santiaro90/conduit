@@ -1,4 +1,13 @@
 #!/bin/bash
+while getopts 'f' opt; do
+  case $opt in
+    (f)
+      force=true
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
 project="${1:-api}" # project == api | client
 stack="${2:-rails}" # stack == a subdirectory of api or client, e.g react
 
@@ -6,9 +15,14 @@ context=./$project/$stack
 dockerfile=$context/docker/Dockerfile
 image_name=conduit-$stack
 
-# This helps checking whether the image already exists
-docker image inspect $image_name > /dev/null 2>&1
+# If the -f option isn't passed, check for any existing images with the same
+# name, and exit if one is found.
+if [[ -z $force ]]; then
+  docker image inspect $image_name > /dev/null 2>&1
+  [[ $? -eq 0 ]] && \
+    echo "build-base-image: there'a already an image with the name $image_name" && \
+    echo 'Pass the -f option to rebuild it.' && \
+    exit 0
+fi
 
-# Build image if needed
-[[ $? -eq 0 ]] || \
-  docker image build -f $dockerfile -t $image_name $context
+docker image build -f $dockerfile -t $image_name $context
