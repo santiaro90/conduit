@@ -9,6 +9,7 @@ guard :rspec, cmd: 'bin/rspec' do
   watch(%r{^spec/(.+_spec\.rb)$})
 
   watch('app/controllers/application_controller.rb') { "spec/controllers" }
+  watch(%r{^app/controllers/concerns/v1/.+\.rb$}) { "spec/controllers" }
 
   watch(%r{^app/services/(.+_service)\.rb$}) do |m|
     ["spec/controllers", "spec/services/#{m[1]}_spec.rb"]

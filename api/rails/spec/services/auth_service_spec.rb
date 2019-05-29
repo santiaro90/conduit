@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe AuthService do
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { FactoryBot.create(:registered_user) }
 
   it 'generates a valid JWT for an existing user' do
     token, _ = AuthService.authenticate_user(user.email, user.password)
