@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-ls -al ./coverage
-
 if [[ $CI == "true" ]]; then
   bash <(curl -s https://codecov.io/bash) -cF $1
 fi
