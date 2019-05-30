@@ -24,12 +24,13 @@ shift 2
 ci_env=
 cov_volume="-v $PWD/coverage:/opt/conduit/coverage"
 
-# Create coverage folder for the given api, if it doesn't already exist
-[[ ! -d ./coverage ]] && mkdir -p ./coverage
+# Clean up previous coverage reports
+[[ -d ./coverage ]] && rm -r ./coverage
+mkdir -p ./coverage/lcov
 
 if [[ $CI == "true" ]]; then
   ci_env=`bash <(curl -s https://codecov.io/env)`
-  ci_env="$ci_env -e CODECOV_FLAG=rails"
+  ci_env="$ci_env"
 fi
 
 # Set docker-compose options
