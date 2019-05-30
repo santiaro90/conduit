@@ -3,6 +3,7 @@ set -e
 
 # Set docker-compose containers' prefix
 export COMPOSE_PROJECT_NAME=conduit-test
+export DOCKER_COMPOSE_FILE=$PWD/api/$api/docker/docker-compose.test.yml
 
 if [[ $# -lt 2 ]]; then
   echo 'run-tests-api: you must provide the stack and service to test'
@@ -22,8 +23,22 @@ service="$2"
 
 ./scripts/build-base-image api $api
 
-compose_file=./api/$api/docker/docker-compose.test.yml
-
 shift 2
-docker-compose -f $compose_file run --rm $service $*
-docker-compose -f $compose_file down --rmi local
+
+ci_env=
+cov_volume="-v $PWD/coverage:/opt/conduit/coverage"
+
+# Create coverage folder for the given api, if it doesn't already exist
+[[ ! -d ./coverage ]] && mkdir -p ./coverage
+
+if [[ $CI == "true" ]]; then
+  ci_env=`bash <(curl -s https://codecov.io/env)`
+  ci_env="$ci_env -e CODECOV_FLAG=rails"
+fi
+
+docker-compose build $service
+docker-compose run $ci_env $cov_volume --rm $service $*
+
+./scripts/collect-coverage api/$api
+
+docker-compose down --rmi local
