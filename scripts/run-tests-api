@@ -40,6 +40,6 @@ export COMPOSE_FILE=$PWD/api/$api/docker/docker-compose.test.yml
 docker-compose build $service
 docker-compose run $ci_env $cov_volume --rm $service $*
 
-./scripts/collect-coverage api/$api
+./scripts/collect-coverage $api
 
 docker-compose down --rmi local
