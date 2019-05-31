@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Clean up previous coverage reports
+[[ -d ./coverage ]] && rm -r ./coverage
+mkdir -p ./coverage/lcov
+
+[[ $CI == "true" ]] \
+  && `bash <(curl -s https://codecov.io/env)` \
+  || echo ''

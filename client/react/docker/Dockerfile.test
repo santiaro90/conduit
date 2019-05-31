@@ -8,4 +8,4 @@ COPY .env.development .env
 EXPOSE 3000
 ENV CI=true
 
-CMD ["test"]
+CMD ["test", "--", "--coverage"]
