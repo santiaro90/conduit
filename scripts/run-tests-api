@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -e -x
 
 if [[ $# -lt 2 ]]; then
   echo 'run-tests-api: you must provide the stack and service to test'
@@ -21,17 +21,8 @@ service="$2"
 
 shift 2
 
-ci_env=
+ci_env=`./scripts/coverage-env`
 cov_volume="-v $PWD/coverage:/opt/conduit/coverage"
-
-# Clean up previous coverage reports
-[[ -d ./coverage ]] && rm -r ./coverage
-mkdir -p ./coverage/lcov
-
-if [[ $CI == "true" ]]; then
-  ci_env=`bash <(curl -s https://codecov.io/env)`
-  ci_env="$ci_env"
-fi
 
 # Set docker-compose options
 export COMPOSE_PROJECT_NAME=conduit-test
