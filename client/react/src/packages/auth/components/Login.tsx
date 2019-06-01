@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect, MapDispatchToProps, MapStateToProps } from 'react-redux';
 
 import { ConduitState } from 'packages/core/types';
-import { LoginAction } from 'packages/auth/types';
+import { LoginAction } from '../types';
 
 import LoginForm from './LoginForm';
 
@@ -13,10 +13,15 @@ import { login } from '../auth.store';
 
 import styles from './styles/Login.module.css';
 
-type LoginPage = {
+type BoundActions = {
   login: LoginAction;
+};
+
+type MappedState = {
   error: string | null;
 };
+
+type LoginPage = BoundActions & MappedState;
 
 const Login: FunctionComponent<LoginPage> = ({ error, login }) => (
   <Row>
@@ -34,17 +39,12 @@ const Login: FunctionComponent<LoginPage> = ({ error, login }) => (
   </Row>
 );
 
-const mapStateToProps: MapStateToProps<{}, {}, ConduitState> = state => ({
+const mapStateToProps: MapStateToProps<MappedState, {}, ConduitState> = state => ({
   error: state.auth.error,
 });
 
-const mapDispatchToProps: MapDispatchToProps<{}, {}> = dispatch =>
-  bindActionCreators(
-    {
-      login,
-    },
-    dispatch
-  );
+const mapDispatchToProps: MapDispatchToProps<BoundActions, {}> = dispatch =>
+  bindActionCreators({ login }, dispatch);
 
 export default connect(
   mapStateToProps,

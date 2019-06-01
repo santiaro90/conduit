@@ -1,8 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { ConduitState } from 'packages/core/types';
-import { GenericError, LoginCredentials, UserProfile } from 'packages/api/types';
+import {
+  ConduitErrorAction,
+  ConduitState,
+  ConduitSuccessAction,
+} from 'packages/core/types';
+
+import { LoginCredentials, UserProfile } from 'packages/api/types';
 
 export type AuthState = {
   readonly loggedIn: boolean;
@@ -14,15 +19,12 @@ export enum AuthActionType {
   AUTH_LOGIN_ERROR = 'conduit/AUTH_LOGIN_ERROR',
 }
 
-export type LoginSuccessAction = {
-  type: AuthActionType.AUTH_LOGIN_SUCCESS;
-  payload: UserProfile;
-};
+export type LoginSuccessAction = ConduitSuccessAction<
+  AuthActionType.AUTH_LOGIN_SUCCESS,
+  UserProfile
+>;
 
-export type LoginErrorAction = {
-  type: AuthActionType.AUTH_LOGIN_ERROR;
-  payload: GenericError;
-};
+export type LoginErrorAction = ConduitErrorAction<AuthActionType.AUTH_LOGIN_ERROR>;
 
 export type LoginAction = (
   credentials: LoginCredentials
