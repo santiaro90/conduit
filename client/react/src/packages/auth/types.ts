@@ -5,7 +5,6 @@ import { ConduitState } from 'packages/core/types';
 import { GenericError, UserCredentials, UserProfile } from 'packages/api/types';
 
 export type AuthState = {
-  readonly currentUser: UserProfile | null;
   readonly loggedIn: boolean;
   readonly error: string | null;
 };

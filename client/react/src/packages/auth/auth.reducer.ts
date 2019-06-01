@@ -3,7 +3,6 @@ import { Reducer } from 'redux';
 import { AuthState, AuthActionType, LoginErrorAction } from './types';
 
 const initialState: AuthState = {
-  currentUser: null,
   error: null,
   loggedIn: false,
 };
@@ -11,14 +10,16 @@ const initialState: AuthState = {
 const authReducer: Reducer<AuthState> = (state = initialState, action) => {
   switch (action.type) {
     case AuthActionType.AUTH_LOGIN_SUCCESS:
-      return { currentUser: null, error: null, loggedIn: true };
+      return { error: null, loggedIn: true };
 
-    case AuthActionType.AUTH_LOGIN_ERROR:
+    case AuthActionType.AUTH_LOGIN_ERROR: {
+      const error: string = (action as LoginErrorAction).payload.error;
+
       return {
-        currentUser: null,
-        error: (action as LoginErrorAction).payload.error,
+        error,
         loggedIn: false,
       };
+    }
 
     default:
       return state;
