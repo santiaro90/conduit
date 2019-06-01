@@ -38,9 +38,16 @@ export type LoginRequest = {
   user: LoginCredentials;
 };
 
+export type SignUpRequest = {
+  user: UserCredentials;
+};
+
 // Response types
 export type LoginSuccess = {
   user: UserProfile;
 };
 
 export type LoginResponse = LoginSuccess | GenericError;
+
+export type SignUpSuccess = LoginSuccess;
+export type SignUpResponse = LoginResponse;

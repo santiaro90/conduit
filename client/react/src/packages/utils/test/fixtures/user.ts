@@ -1,4 +1,4 @@
-import { LoginCredentials, UserProfile } from 'packages/api/types';
+import { LoginCredentials, UserCredentials, UserProfile } from 'packages/api/types';
 
 const baseUser = {
   email: 'santiago@example.com',
@@ -11,6 +11,12 @@ const getLoginCredentials = (): LoginCredentials => ({
   password: baseUser.password,
 });
 
+const getSignUpCredentials = (): UserCredentials => ({
+  email: baseUser.email,
+  password: baseUser.password,
+  username: baseUser.username,
+});
+
 const getUserProfile = (bio: string | null = null): UserProfile => ({
   bio,
   email: baseUser.email,
@@ -19,5 +25,6 @@ const getUserProfile = (bio: string | null = null): UserProfile => ({
 
 export default {
   getLoginCredentials,
+  getSignUpCredentials,
   getUserProfile,
 };
