@@ -9,7 +9,7 @@ const LoginForm: FunctionComponent<FormikProps<LoginCredentials>> = ({
   handleSubmit,
   values,
 }) => (
-  <Form data-testid="login-form" onSubmit={handleSubmit}>
+  <Form onSubmit={handleSubmit}>
     <FormGroup>
       <Label for="email" hidden>
         Email

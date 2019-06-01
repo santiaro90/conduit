@@ -37,8 +37,8 @@ const signUp = (): SignUpPageObject => ({
   },
 
   submit(): SignUpPageObject {
-    const submit = this.component.getByText(/sign up/i);
-    events.clickOn(submit);
+    const submit = this.component.getAllByText(/sign up/i);
+    events.clickOn(submit[1]);
 
     return this;
   },

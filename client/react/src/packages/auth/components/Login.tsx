@@ -11,7 +11,7 @@ import LoginForm from './LoginForm';
 
 import { login } from '../auth.store';
 
-import styles from './styles/Login.module.css';
+import styles from 'packages/shared/styles/SigningPage.module.css';
 
 type BoundActions = {
   login: LoginAction;
