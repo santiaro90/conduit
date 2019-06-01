@@ -7,8 +7,8 @@ import {
 
 import {
   GenericError,
+  LoginCredentials,
   LoginSuccess,
-  UserCredentials,
   UserProfile,
 } from 'packages/api/types';
 
@@ -24,7 +24,7 @@ const loginError = (error: GenericError): LoginErrorAction => ({
   payload: error,
 });
 
-export const login: LoginAction = (credentials: UserCredentials) => async (
+export const login: LoginAction = (credentials: LoginCredentials) => async (
   dispatch
 ): Promise<LoginSuccessAction | LoginErrorAction> => {
   try {

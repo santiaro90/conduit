@@ -15,7 +15,13 @@ export type GenericError = {
 export type UserCredentials = {
   email: string;
   password: string;
+  username: string;
 };
+
+export type LoginCredentials = Pick<
+  UserCredentials,
+  Exclude<keyof UserCredentials, 'username'>
+>;
 
 export type UserProfile = {
   bio: string | null;
@@ -29,7 +35,7 @@ export interface RequestError extends AxiosError {
 }
 
 export type LoginRequest = {
-  user: UserCredentials;
+  user: LoginCredentials;
 };
 
 // Response types

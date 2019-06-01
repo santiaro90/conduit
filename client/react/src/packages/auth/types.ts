@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { ConduitState } from 'packages/core/types';
-import { GenericError, UserCredentials, UserProfile } from 'packages/api/types';
+import { GenericError, LoginCredentials, UserProfile } from 'packages/api/types';
 
 export type AuthState = {
   readonly loggedIn: boolean;
@@ -25,5 +25,5 @@ export type LoginErrorAction = {
 };
 
 export type LoginAction = (
-  credentials: UserCredentials
+  credentials: LoginCredentials
 ) => ThunkAction<void, ConduitState, undefined, AnyAction>;

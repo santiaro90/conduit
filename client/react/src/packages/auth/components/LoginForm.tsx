@@ -2,9 +2,9 @@ import React, { FunctionComponent } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label } from 'reactstrap';
 import { FormikProps } from 'formik';
 
-import { UserCredentials } from 'packages/api/types';
+import { LoginCredentials } from 'packages/api/types';
 
-const LoginForm: FunctionComponent<FormikProps<UserCredentials>> = ({
+const LoginForm: FunctionComponent<FormikProps<LoginCredentials>> = ({
   handleChange,
   handleSubmit,
   values,

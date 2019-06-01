@@ -3,13 +3,13 @@ import {
   LoginRequest,
   LoginSuccess,
   RequestError,
-  UserCredentials,
+  LoginCredentials,
 } from './types';
 
 import api from './base';
 import { endpoints } from 'packages/config';
 
-const login = async (credentials: UserCredentials): Promise<LoginResponse> => {
+const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   try {
     const payload: LoginRequest = { user: credentials };
     const { data } = await api.post<LoginSuccess>(endpoints.login, payload);
