@@ -1,39 +1,24 @@
-import {
-  LoginRequest,
-  LoginSuccess,
-  UserCredentials,
-  UserProfile,
-} from 'packages/api/types';
+import { HttpCodes, LoginRequest, LoginSuccess } from 'packages/api/types';
 
+import * as fixtures from 'packages/utils/test/fixtures';
 import utils from 'packages/utils/test';
 import { endpoints } from 'packages/config';
 
 const { api, pages, wait } = utils;
 
 describe('<Login />', (): void => {
-  const credentials: UserCredentials = {
-    email: 'santiago@example.com',
-    password: 'password',
-  };
-
-  const profile: UserProfile = {
-    bio: null,
-    email: credentials.email,
-    username: 'santiago',
-  };
-
   it('submits user credentials', async (): Promise<void> => {
-    const payload: LoginRequest = { user: credentials };
-    const response: LoginSuccess = { user: profile };
+    const payload: LoginRequest = { user: fixtures.user.getLoginCredentials() };
+    const response: LoginSuccess = { user: fixtures.user.getUserProfile() };
 
-    api.post(endpoints.login, payload).reply(200, response);
+    api.post(endpoints.login, payload).reply(HttpCodes.OK, response);
 
     const loginPage = pages.login();
     const { store } = loginPage.component;
 
     loginPage
-      .setEmail(credentials.email)
-      .setPassword(credentials.password)
+      .setEmail(payload.user.email)
+      .setPassword(payload.user.password)
       .submit();
 
     await wait(
@@ -41,23 +26,23 @@ describe('<Login />', (): void => {
         const { auth, user } = store.getState();
 
         expect(auth.loggedIn).toBe(true);
-        expect(user).toEqual(profile);
+        expect(user).toEqual(response.user);
       }
     );
   });
 
   it('renders authentication failures', async (): Promise<void> => {
+    const payload: LoginRequest = { user: fixtures.user.getLoginCredentials() };
     const error = 'Authentication Error';
-    const payload: LoginRequest = { user: credentials };
 
-    api.post(endpoints.login, payload).reply(404, { error });
+    api.post(endpoints.login, payload).reply(HttpCodes.NOT_FOUND, { error });
 
     const loginPage = pages.login();
     const { store } = loginPage.component;
 
     loginPage
-      .setEmail(credentials.email)
-      .setPassword(credentials.password)
+      .setEmail(payload.user.email)
+      .setPassword(payload.user.password)
       .submit();
 
     await wait(

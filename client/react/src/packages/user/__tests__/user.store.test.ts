@@ -1,12 +1,7 @@
 import { ConduitStore } from 'packages/core/types';
-import {
-  HttpCodes,
-  LoginRequest,
-  LoginSuccess,
-  UserCredentials,
-  UserProfile,
-} from 'packages/api/types';
+import { HttpCodes, LoginRequest, LoginSuccess } from 'packages/api/types';
 
+import * as fixtures from 'packages/utils/test/fixtures';
 import createStore from 'packages/core/core.store';
 import utils from 'packages/utils/test';
 import { endpoints } from 'packages/config';
@@ -16,17 +11,6 @@ const { api } = utils;
 
 describe('User store', (): void => {
   let store: ConduitStore;
-
-  const credentials: UserCredentials = {
-    email: 'santiago@example.com',
-    password: 'password',
-  };
-
-  const profile: UserProfile = {
-    bio: null,
-    email: credentials.email,
-    username: 'santiago',
-  };
 
   beforeEach(
     (): void => {
@@ -43,15 +27,15 @@ describe('User store', (): void => {
 
   describe('when logging in', (): void => {
     it(`sets the user's profile`, async (): Promise<void> => {
-      const payload: LoginRequest = { user: credentials };
-      const response: LoginSuccess = { user: profile };
+      const payload: LoginRequest = { user: fixtures.user.getLoginCredentials() };
+      const response: LoginSuccess = { user: fixtures.user.getUserProfile() };
 
       api.post(endpoints.login, payload).reply(HttpCodes.OK, response);
 
-      await store.dispatch(login(credentials));
+      await store.dispatch(login(payload.user));
 
       const { user } = store.getState();
-      expect(user).toEqual(profile);
+      expect(user).toEqual(response.user);
     });
   });
 });
