@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageObject } from '../types';
+import { FormPageObject } from '../types';
 
 import { Login } from 'packages/auth/components';
 
@@ -7,27 +7,28 @@ import dom from '../dom';
 
 const { events } = dom;
 
-type LoginPageObject = PageObject & {
+type LoginPageObject = FormPageObject<{
   setEmail: (email: string) => LoginPageObject;
   setPassword: (password: string) => LoginPageObject;
   submit: () => LoginPageObject;
-};
+}>;
 
-const login = (): LoginPageObject => ({
+const signUp = (): LoginPageObject => ({
   component: dom.render(<Login />),
 
-  setEmail(value: string): LoginPageObject {
-    const input = this.component.getByName('email') as HTMLInputElement;
+  fillInput(name: string, value: string): LoginPageObject {
+    const input = this.component.getByName(name) as HTMLInputElement;
     events.fillInput(input, value);
 
     return this;
   },
 
-  setPassword(value: string): LoginPageObject {
-    const input = this.component.getByName('password') as HTMLInputElement;
-    events.fillInput(input, value);
+  setEmail(value: string): LoginPageObject {
+    return this.fillInput('email', value);
+  },
 
-    return this;
+  setPassword(value: string): LoginPageObject {
+    return this.fillInput('password', value);
   },
 
   submit(): LoginPageObject {
@@ -38,4 +39,4 @@ const login = (): LoginPageObject => ({
   },
 });
 
-export default login;
+export default signUp;
