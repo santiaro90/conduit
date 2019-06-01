@@ -1,8 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { ConduitState } from 'packages/core/types';
-import { GenericError, UserCredentials, UserProfile } from 'packages/api/types';
+import {
+  ConduitErrorAction,
+  ConduitState,
+  ConduitSuccessAction,
+} from 'packages/core/types';
+
+import { UserCredentials, UserProfile } from 'packages/api/types';
 
 export enum SignUpActionType {
   USER_SIGNUP_SUCCESS = 'conduit/USER_SIGNUP_SUCCESS',
@@ -11,10 +16,12 @@ export enum SignUpActionType {
 
 export type UserState = UserProfile | null;
 
-export type SignUpSuccessAction = {
-  type: SignUpActionType.USER_SIGNUP_SUCCESS;
-  payload: UserProfile;
-};
+export type SignUpSuccessAction = ConduitSuccessAction<
+  SignUpActionType.USER_SIGNUP_SUCCESS,
+  UserProfile
+>;
+
+export type SignUpErrorAction = ConduitErrorAction<SignUpActionType.USER_SIGNUP_ERROR>;
 
 export type SignUpAction = (
   credentials: UserCredentials
