@@ -1,9 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { Col, Row } from 'reactstrap';
 import { Formik } from 'formik';
-import { MapDispatchToProps, connect } from 'react-redux';
+import { MapDispatchToProps, MapStateToProps, connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { ConduitState } from 'packages/core/types';
 import { SignUpAction } from '../types';
 import { UserCredentials } from 'packages/api/types';
 
@@ -17,7 +18,11 @@ type BoundActions = {
   signUp: SignUpAction;
 };
 
-type SignUpPage = BoundActions;
+type MappedState = {
+  error: string | null;
+};
+
+type SignUpPage = BoundActions & MappedState;
 
 const initialValues: UserCredentials = {
   email: '',
@@ -25,16 +30,21 @@ const initialValues: UserCredentials = {
   username: '',
 };
 
-const SignUp: FunctionComponent<SignUpPage> = ({ signUp }) => (
+const SignUp: FunctionComponent<SignUpPage> = ({ error, signUp }) => (
   <Row>
     <Col md={{ size: 6, offset: 3 }}>
       <h1 className={styles.header}>Sign up</h1>
+
+      {error && <h3 className={`${styles.error} text-danger`}>{error}</h3>}
+
       <Formik component={SignUpForm} initialValues={initialValues} onSubmit={signUp} />
     </Col>
   </Row>
 );
 
-const mapStateToProps = (): {} => ({});
+const mapStateToProps: MapStateToProps<MappedState, {}, ConduitState> = state => ({
+  error: state.user.error,
+});
 
 const mapDispatchToProps: MapDispatchToProps<BoundActions, {}> = dispatch =>
   bindActionCreators(
