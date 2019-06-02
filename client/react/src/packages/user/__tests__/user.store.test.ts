@@ -63,5 +63,19 @@ describe('User store', (): void => {
       const { user } = store.getState();
       expect(user.profile).toEqual(response.user);
     });
+
+    it('handles errors', async (): Promise<void> => {
+      const payload: SignUpRequest = { user: fixtures.user.getSignUpCredentials() };
+      const response = { error: 'Bad Params' };
+
+      api.post(endpoints.users, payload).reply(HttpCodes.BAD_PARAMS, response);
+
+      await store.dispatch(signUp(payload.user));
+
+      const { user } = store.getState();
+
+      expect(user.profile).toBeNull();
+      expect(user.error).toBe(response.error);
+    });
   });
 });

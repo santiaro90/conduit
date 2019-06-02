@@ -2,7 +2,12 @@ import { Reducer } from 'redux';
 
 import { AuthActionType, LoginSuccessAction } from 'packages/auth/types';
 import { UserProfile } from 'packages/api/types';
-import { SignUpActionType, SignUpSuccessAction, UserState } from './types';
+import {
+  SignUpActionType,
+  SignUpErrorAction,
+  SignUpSuccessAction,
+  UserState,
+} from './types';
 
 const initialState: UserState = {
   error: null,
@@ -19,6 +24,11 @@ const userReducer: Reducer<UserState> = (state = initialState, action) => {
     case SignUpActionType.USER_SIGNUP_SUCCESS: {
       const profile: UserProfile = (action as SignUpSuccessAction).payload;
       return { error: null, profile };
+    }
+
+    case SignUpActionType.USER_SIGNUP_ERROR: {
+      const error: string = (action as SignUpErrorAction).payload.error;
+      return { error, profile: null };
     }
 
     default:

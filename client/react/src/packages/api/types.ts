@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 
 export enum HttpCodes {
+  BAD_PARAMS = 400,
   CREATED = 201,
   NOT_FOUND = 404,
   OK = 200,
