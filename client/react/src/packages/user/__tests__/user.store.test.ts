@@ -26,9 +26,14 @@ describe('User store', (): void => {
   );
 
   describe('default state', (): void => {
-    it('is null', (): void => {
+    it('has a null profile', (): void => {
       const { user } = store.getState();
-      expect(user).toBeNull();
+      expect(user.profile).toBeNull();
+    });
+
+    it('has a null error', (): void => {
+      const { user } = store.getState();
+      expect(user.error).toBeNull();
     });
   });
 
@@ -42,7 +47,7 @@ describe('User store', (): void => {
       await store.dispatch(login(payload.user));
 
       const { user } = store.getState();
-      expect(user).toEqual(response.user);
+      expect(user.profile).toEqual(response.user);
     });
   });
 
@@ -56,7 +61,7 @@ describe('User store', (): void => {
       await store.dispatch(signUp(payload.user));
 
       const { user } = store.getState();
-      expect(user).toEqual(response.user);
+      expect(user.profile).toEqual(response.user);
     });
   });
 });

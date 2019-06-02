@@ -25,7 +25,7 @@ describe('<SignUp />', (): void => {
     await wait(
       (): void => {
         const { user } = getState();
-        expect(user).toEqual(response.user);
+        expect(user.profile).toEqual(response.user);
       }
     );
   });

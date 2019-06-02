@@ -26,7 +26,7 @@ describe('<Login />', (): void => {
         const { auth, user } = store.getState();
 
         expect(auth.loggedIn).toBe(true);
-        expect(user).toEqual(response.user);
+        expect(user.profile).toEqual(response.user);
       }
     );
   });

@@ -14,7 +14,10 @@ export enum SignUpActionType {
   USER_SIGNUP_ERROR = 'conduit/USER_SIGNUP_ERROR',
 }
 
-export type UserState = UserProfile | null;
+export type UserState = {
+  profile: UserProfile | null;
+  error: string | null;
+};
 
 export type SignUpSuccessAction = ConduitSuccessAction<
   SignUpActionType.USER_SIGNUP_SUCCESS,
