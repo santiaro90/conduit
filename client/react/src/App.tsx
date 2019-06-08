@@ -2,12 +2,11 @@ import React, { FunctionComponent } from 'react';
 import { Container } from 'reactstrap';
 
 import ConduitRoutes from './routes';
+import { Header } from 'packages/core/components';
 
 const App: FunctionComponent<{}> = () => (
   <>
-    <header>
-      <h1>Conduit</h1>
-    </header>
+    <Header />
 
     <main>
       <Container>

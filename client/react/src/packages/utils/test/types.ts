@@ -18,6 +18,11 @@ export type PageObject = {
   component: RenderResult;
 };
 
+export type FormPageObject<T> = PageObject & {
+  fillInput: (name: string, value: string) => FormPageObject<T>;
+  submit: () => FormPageObject<T>;
+} & { [Q in keyof T]: T[Q] };
+
 type Env = ConduitEnv;
 
 declare global {

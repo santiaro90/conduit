@@ -1,52 +1,60 @@
 import React, { FunctionComponent } from 'react';
 import { Col, Row } from 'reactstrap';
 import { Formik } from 'formik';
+import { MapDispatchToProps, MapStateToProps, connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { connect, MapDispatchToProps, MapStateToProps } from 'react-redux';
 
 import { ConduitState } from 'packages/core/types';
-import { LoginAction } from '../types';
+import { SignUpAction } from '../types';
+import { UserCredentials } from 'packages/api/types';
 
-import LoginForm from './LoginForm';
+import SignUpForm from './SignUpForm';
 
-import { login } from '../auth.store';
+import * as store from '../user.store';
 
 import styles from 'packages/shared/styles/SigningPage.module.css';
 
 type BoundActions = {
-  login: LoginAction;
+  signUp: SignUpAction;
 };
 
 type MappedState = {
   error: string | null;
 };
 
-type LoginPage = BoundActions & MappedState;
+type SignUpPage = BoundActions & MappedState;
 
-const Login: FunctionComponent<LoginPage> = ({ error, login }) => (
+const initialValues: UserCredentials = {
+  email: '',
+  password: '',
+  username: '',
+};
+
+const SignUp: FunctionComponent<SignUpPage> = ({ error, signUp }) => (
   <Row>
     <Col md={{ size: 6, offset: 3 }}>
-      <h1 className={styles.header}>Sign in</h1>
+      <h1 className={styles.header}>Sign up</h1>
 
       {error && <h3 className={`${styles.error} text-danger`}>{error}</h3>}
 
-      <Formik
-        component={LoginForm}
-        initialValues={{ email: '', password: '' }}
-        onSubmit={login}
-      />
+      <Formik component={SignUpForm} initialValues={initialValues} onSubmit={signUp} />
     </Col>
   </Row>
 );
 
 const mapStateToProps: MapStateToProps<MappedState, {}, ConduitState> = state => ({
-  error: state.auth.error,
+  error: state.user.error,
 });
 
 const mapDispatchToProps: MapDispatchToProps<BoundActions, {}> = dispatch =>
-  bindActionCreators({ login }, dispatch);
+  bindActionCreators(
+    {
+      signUp: store.signUp,
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(SignUp);

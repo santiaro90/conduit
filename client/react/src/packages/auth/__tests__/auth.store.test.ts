@@ -1,6 +1,7 @@
-import { UserCredentials, UserProfile } from 'packages/api/types';
 import { ConduitStore } from 'packages/core/types';
+import { HttpCodes, LoginRequest, LoginSuccess } from 'packages/api/types';
 
+import * as fixtures from 'packages/utils/test/fixtures';
 import createStore from 'packages/core/core.store';
 import utils from 'packages/utils/test';
 import { endpoints } from 'packages/config';
@@ -10,19 +11,6 @@ const { api } = utils;
 
 describe('Auth store', (): void => {
   let store: ConduitStore;
-
-  const credentials: UserCredentials = {
-    email: 'santiago@example',
-    password: 'password',
-  };
-
-  const profile: UserProfile = {
-    bio: 'My bio.',
-    email: credentials.email,
-    username: 'santiago',
-  };
-
-  const user = { user: credentials };
 
   beforeEach(
     (): void => {
@@ -36,48 +24,49 @@ describe('Auth store', (): void => {
       expect(auth.loggedIn).toBe(false);
     });
 
-    it(`doesn't have a current user`, (): void => {
-      const { auth } = store.getState();
-      expect(auth.currentUser).toBeNull();
-    });
-
     it(`doesn't have an error`, (): void => {
       const { auth } = store.getState();
       expect(auth.error).toBeNull();
     });
   });
 
-  it('logs a user in', async (): Promise<void> => {
-    api.post(endpoints.login, user).reply(200, { user: profile });
+  describe('when logging in', (): void => {
+    it('sets the logged in flag', async (): Promise<void> => {
+      const payload: LoginRequest = { user: fixtures.user.getLoginCredentials() };
+      const response: LoginSuccess = { user: fixtures.user.getUserProfile() };
 
-    await store.dispatch(login(credentials));
+      api.post(endpoints.login, payload).reply(HttpCodes.OK, response);
 
-    const { auth } = store.getState();
-    expect(auth.loggedIn).toBe(true);
-  });
+      await store.dispatch(login(payload.user));
 
-  it('handles authentication errors', async (): Promise<void> => {
-    const error404 = 'Not Found';
-    const error401 = 'Not Authorised';
+      const { auth } = store.getState();
+      expect(auth.loggedIn).toBe(true);
+    });
 
-    api
-      .post(endpoints.login, user)
-      .reply(401, { error: error401 })
-      .post(endpoints.login, user)
-      .reply(404, { error: error404 });
+    it('handles errors', async (): Promise<void> => {
+      const payload: LoginRequest = { user: fixtures.user.getLoginCredentials() };
+      const error404 = { error: 'Not Found' };
+      const error401 = { error: 'Not Authorised' };
 
-    await store.dispatch(login(credentials));
+      api
+        .post(endpoints.login, payload)
+        .reply(HttpCodes.UNAUTHORISED, error401)
+        .post(endpoints.login, payload)
+        .reply(HttpCodes.NOT_FOUND, error404);
 
-    const { auth: auth401 } = store.getState();
+      await store.dispatch(login(payload.user));
 
-    expect(auth401.loggedIn).toBe(false);
-    expect(auth401.error).toBe(error401);
+      const { auth: auth401 } = store.getState();
 
-    await store.dispatch(login(credentials));
+      expect(auth401.loggedIn).toBe(false);
+      expect(auth401.error).toBe(error401.error);
 
-    const { auth: auth404 } = store.getState();
+      await store.dispatch(login(payload.user));
 
-    expect(auth404.loggedIn).toBe(false);
-    expect(auth404.error).toBe(error404);
+      const { auth: auth404 } = store.getState();
+
+      expect(auth404.loggedIn).toBe(false);
+      expect(auth404.error).toBe(error404.error);
+    });
   });
 });

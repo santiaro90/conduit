@@ -2,9 +2,9 @@ import React, { FunctionComponent } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label } from 'reactstrap';
 import { FormikProps } from 'formik';
 
-import { LoginCredentials } from 'packages/api/types';
+import { UserCredentials } from 'packages/api/types';
 
-const LoginForm: FunctionComponent<FormikProps<LoginCredentials>> = ({
+const SignUpForm: FunctionComponent<FormikProps<UserCredentials>> = ({
   handleChange,
   handleSubmit,
   values,
@@ -21,6 +21,20 @@ const LoginForm: FunctionComponent<FormikProps<LoginCredentials>> = ({
         onChange={handleChange}
         placeholder="Email"
         value={values.email}
+      />
+    </FormGroup>
+
+    <FormGroup>
+      <Label for="username" hidden>
+        Username
+      </Label>
+      <Input
+        bsSize="lg"
+        id="username"
+        name="username"
+        onChange={handleChange}
+        placeholder="Username"
+        value={values.username}
       />
     </FormGroup>
 
@@ -42,11 +56,11 @@ const LoginForm: FunctionComponent<FormikProps<LoginCredentials>> = ({
     <FormGroup row>
       <Col md={{ offset: 9, size: 3 }}>
         <Button color="success" size="lg" type="submit" block>
-          Login
+          Sign Up
         </Button>
       </Col>
     </FormGroup>
   </Form>
 );
 
-export default LoginForm;
+export default SignUpForm;

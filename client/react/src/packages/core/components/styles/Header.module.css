@@ -1,0 +1,24 @@
+.wrapper {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.brand {
+  color: var(--color-primary) !important;
+  font-size: var(--font-size-xl) !important;
+  font-weight: bold;
+}
+
+.link {
+  color: var(--color-black);
+  opacity: .6;
+}
+
+.link:hover {
+  color: var(--color-black);
+  opacity: 1;
+}
+
+.link:global(.active) {
+  opacity: 1;
+}
