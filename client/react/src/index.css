@@ -1,6 +1,20 @@
 @import-normalize;
 
+:root {
+  --color-primary: #5CB85C;
+  --color-black: #333333;
+
+  --font-primary: 'Source Sans Pro', sans-serif;
+  --font-size-base: 16px;
+
+  --font-size-s: 12px;
+  --font-size-m: var(--font-size-base);
+  --font-size-l: 20px;
+  --font-size-xl: 24px;
+}
+
 body {
-  font-family: 'Source Sans Pro';
-  font-size: 14px;
+  color: var(--color-black);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
 }
