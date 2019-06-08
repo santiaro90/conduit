@@ -13,12 +13,8 @@ const authReducer: Reducer<AuthState> = (state = initialState, action) => {
       return { error: null, loggedIn: true };
 
     case AuthActionType.AUTH_LOGIN_ERROR: {
-      const error: string = (action as LoginErrorAction).payload.error;
-
-      return {
-        error,
-        loggedIn: false,
-      };
+      const { error } = (action as LoginErrorAction).payload;
+      return { error, loggedIn: false };
     }
 
     default:

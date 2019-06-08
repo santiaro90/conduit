@@ -27,7 +27,7 @@ const userReducer: Reducer<UserState> = (state = initialState, action) => {
     }
 
     case SignUpActionType.USER_SIGNUP_ERROR: {
-      const error: string = (action as SignUpErrorAction).payload.error;
+      const { error } = (action as SignUpErrorAction).payload;
       return { error, profile: null };
     }
 
