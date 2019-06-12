@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -e -x
 
 if [[ $CI == "true" ]]; then
   bash <(curl -s https://codecov.io/bash) -cF $1
