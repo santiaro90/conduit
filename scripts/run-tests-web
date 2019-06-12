@@ -21,15 +21,16 @@ service="$2"
 
 shift 2
 
-ci_env=`./scripts/coverage-env`
 cov_volume="-v $PWD/coverage:/opt/conduit/coverage"
 
 # Set docker-compose containers' prefix
 export COMPOSE_PROJECT_NAME=conduit-test
 export COMPOSE_FILE=$PWD/client/$client/docker/docker-compose.test.yml
 
+./scripts/coverage-env
+
 docker-compose build $service $*
-docker-compose run $ci_env $cov_volume --rm $service $*
+docker-compose run $cov_volume --rm $service $*
 
 ./scripts/collect-coverage $client
 

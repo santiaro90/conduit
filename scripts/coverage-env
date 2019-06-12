@@ -3,10 +3,4 @@ set -e -x
 
 # Clean up previous coverage reports
 [[ -d ./coverage ]] && rm -r ./coverage
-mkdir ./coverage
-
-if [[ $CI == "true" ]]; then
-  echo `bash <(curl -s https://codecov.io/env)`
-else
-  echo ''
-fi
+mkdir -p ./coverage/lcov
