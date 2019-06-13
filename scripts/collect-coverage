@@ -2,5 +2,5 @@
 set -e -x
 
 if [[ $CI == "true" ]]; then
-  bash <(curl -s https://codecov.io/bash) -F $1
+  bash <(curl -s https://codecov.io/bash) -cF $1
 fi
