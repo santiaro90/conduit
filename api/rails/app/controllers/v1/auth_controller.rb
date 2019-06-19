@@ -1,11 +1,14 @@
 module V1
   class AuthController < ApplicationController
     def login
-      token, payload = *AuthService.authenticate_user(user_params[:email],
-                                                      user_params[:password])
+      auth_service = AuthService.new(email: user_params[:email],
+                                     password: user_params[:password])
 
+      token = auth_service.authenticate!
+      profile = { user: auth_service.profile }
       cookies[:access_token] = { httponly: true, value: token }
-      render json: payload, status: :ok
+
+      render json: profile, status: :ok
     end
 
     private

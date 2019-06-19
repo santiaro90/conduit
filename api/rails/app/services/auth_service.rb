@@ -1,26 +1,28 @@
-module AuthService
-  class << self
-    include Conduit::Errors
+class AuthService
+  include Conduit::Errors
 
-    SECRET = Rails.application.credentials.secret_key_base
+  attr_reader :email, :password, :profile, :token
 
-    def authenticate_user(email, password)
-      invalid_msg = 'Invalid credentials'
-      user = User.find_by_email(email)
+  SECRET = Rails.application.credentials.secret_key_base
 
-      raise NotFound, invalid_msg unless user
-      raise Unauthorized, invalid_msg unless user.authenticate(password)
+  def initialize(email:, password:)
+    @email = email
+    @password = password
+  end
 
-      profile = user.slice(:bio, :email, :username)
-      payload = { user: profile }
+  def authenticate!
+    invalid_msg = 'Invalid credentials'
+    user = User.find_by_email(email)
 
-      [JWT.encode(payload, SECRET, 'HS256'), payload]
-    end
+    raise NotFound, invalid_msg unless user
+    raise Unauthorized, invalid_msg unless user.authenticate(password)
 
-    def decode(token)
-      payload, _ = *JWT.decode(token, SECRET, 'HS256')
+    @profile = user.slice(:bio, :email, :username)
+    @token = JWT.encode({ user: profile }, SECRET, 'HS256')
+  end
 
-      { payload: payload.with_indifferent_access }
-    end
+  def decode(token)
+    payload, _ = *JWT.decode(token, SECRET, 'HS256')
+    payload.with_indifferent_access
   end
 end
