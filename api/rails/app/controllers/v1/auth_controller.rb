@@ -5,10 +5,12 @@ module V1
                                      password: user_params[:password])
 
       token = auth_service.authenticate!
-      profile = { user: auth_service.profile }
-      cookies[:access_token] = { httponly: true, value: token }
+      res = {
+        accessToken: token,
+        user: auth_service.profile
+      }
 
-      render json: profile, status: :ok
+      render json: res, status: :ok
     end
 
     private
