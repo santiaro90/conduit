@@ -2,25 +2,15 @@ module AuthService
   class << self
     include Conduit::Errors
 
-    SECRET = Rails.application.credentials.secret_key_base
-
-    def authenticate_user(email, password)
+    def authenticate(params)
       invalid_msg = 'Invalid credentials'
-      user = User.find_by_email(email)
+      user = User.find_by_email(params[:email])
 
       raise NotFound, invalid_msg unless user
-      raise Unauthorized, invalid_msg unless user.authenticate(password)
+      raise Unauthorized, invalid_msg unless user.authenticate(params[:password])
 
       profile = user.slice(:bio, :email, :username)
-      payload = { user: profile }
-
-      [JWT.encode(payload, SECRET, 'HS256'), payload]
-    end
-
-    def decode(token)
-      payload, _ = *JWT.decode(token, SECRET, 'HS256')
-
-      { payload: payload.with_indifferent_access }
+      TokenService.generate({ user: profile })
     end
   end
 end

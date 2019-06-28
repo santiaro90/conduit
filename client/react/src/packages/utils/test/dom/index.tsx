@@ -6,6 +6,7 @@ import { RenderResult } from '../types';
 
 import createStore from 'packages/core/core.store';
 import events from './events';
+import localStorage from './localStorage';
 import queries, { getQueriesForElement } from './queries';
 
 const render = (component: ReactElement): RenderResult => {
@@ -22,6 +23,7 @@ const render = (component: ReactElement): RenderResult => {
 
 export default {
   events,
+  localStorage,
   queries,
   render,
 };

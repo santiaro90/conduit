@@ -25,11 +25,16 @@ export type FormPageObject<T> = PageObject & {
 
 type Env = ConduitEnv;
 
+export type LocalStorage = Partial<Storage> & {
+  keys: { [key: string]: string };
+};
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface Global {
       env: Env;
+      localStorage: LocalStorage;
     }
   }
 

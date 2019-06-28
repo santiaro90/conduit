@@ -33,7 +33,10 @@ describe('Auth store', (): void => {
   describe('when logging in', (): void => {
     it('sets the logged in flag', async (): Promise<void> => {
       const payload: LoginRequest = { user: fixtures.user.getLoginCredentials() };
-      const response: LoginSuccess = { user: fixtures.user.getUserProfile() };
+      const response: LoginSuccess = {
+        accessToken: 'abc',
+        user: fixtures.user.getUserProfile(),
+      };
 
       api.post(endpoints.login, payload).reply(HttpCodes.OK, response);
 
@@ -41,6 +44,19 @@ describe('Auth store', (): void => {
 
       const { auth } = store.getState();
       expect(auth.loggedIn).toBe(true);
+    });
+
+    it('stores the access token in localStorage', async (): Promise<void> => {
+      const payload: LoginRequest = { user: fixtures.user.getLoginCredentials() };
+      const response: LoginSuccess = {
+        accessToken: 'abc',
+        user: fixtures.user.getUserProfile(),
+      };
+
+      api.post(endpoints.login, payload).reply(HttpCodes.OK, response);
+
+      await store.dispatch(login(payload.user));
+      expect(localStorage.getItem('access_token')).toBe('abc');
     });
 
     it('handles errors', async (): Promise<void> => {

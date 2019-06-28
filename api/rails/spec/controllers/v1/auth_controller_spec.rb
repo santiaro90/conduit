@@ -17,8 +17,8 @@ describe V1::AuthController, type: :request do
         expect(response).to have_http_status(:ok)
       end
 
-      it 'sets a cookie with an access token' do
-        expect(cookies[:access_token]).not_to be_empty
+      it 'returns an access token' do
+        expect(json_response[:accessToken]).not_to be_empty
       end
 
       it "returns the user's profile" do

@@ -45,6 +45,7 @@ export type SignUpRequest = {
 
 // Response types
 export type LoginSuccess = {
+  accessToken: string;
   user: UserProfile;
 };
 

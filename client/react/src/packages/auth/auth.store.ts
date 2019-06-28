@@ -14,10 +14,14 @@ import {
 
 import api from 'packages/api/auth';
 
-const loginSuccess = (user: UserProfile): LoginSuccessAction => ({
-  type: AuthActionType.AUTH_LOGIN_SUCCESS,
-  payload: user,
-});
+const loginSuccess = (accessToken: string, user: UserProfile): LoginSuccessAction => {
+  localStorage.setItem('access_token', accessToken);
+
+  return {
+    type: AuthActionType.AUTH_LOGIN_SUCCESS,
+    payload: user,
+  };
+};
 
 const loginError = (error: GenericError): LoginErrorAction => ({
   type: AuthActionType.AUTH_LOGIN_ERROR,
@@ -29,7 +33,7 @@ export const login: LoginAction = (credentials: LoginCredentials) => async (
 ): Promise<LoginSuccessAction | LoginErrorAction> => {
   try {
     const response = (await api.login(credentials)) as LoginSuccess;
-    return dispatch(loginSuccess(response.user));
+    return dispatch(loginSuccess(response.accessToken, response.user));
   } catch (e) {
     const error = e as GenericError;
     return dispatch(loginError(error));
