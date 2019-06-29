@@ -5,5 +5,6 @@ Rails.application.routes.draw do
     end
 
     resources :users, only: [:create]
+    resources :articles, only: [:index]
   end
 end
