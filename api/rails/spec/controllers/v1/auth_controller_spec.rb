@@ -10,7 +10,7 @@ describe V1::AuthController, type: :request do
       before :each do
         credentials = { email: user.email, password: 'password' }
 
-        post path, params: { user: credentials }, as: :json
+        post path, params: { user: credentials }
       end
 
       it 'responds successfully' do
